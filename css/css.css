@@ -1,0 +1,45 @@
+root{
+
+}
+
+#main-container{
+    width: 100%;
+
+}
+
+#wrapper{
+    width: 1250px;
+    margin: auto;
+}
+
+#userID{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 30px;
+}
+
+
+
+
+
+
+
+.hidden{
+    display: none;
+}
+
+
+
+
+
+/*modal*/
+
+.modal{
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    margin: auto;
+    width: 800px;
+    height: 800px;
+    background-color: whitesmoke;
+}
