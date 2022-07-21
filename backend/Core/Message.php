@@ -26,6 +26,24 @@ class Message
         echo json_encode($this);
     }
 
+    public function sendSuccessful($Data = null){
+        $this->success = true;
+
+        if($Data){
+            $this->data = $Data;
+        }
+
+        $this->send();
+    }
+
+    public function sendError($ErrorCode, $ErrorMsg){
+
+        $this->errorCode = $ErrorCode;
+        $this->errorMsg = $ErrorMsg;
+
+        $this->send();
+    }
+
 
 
 }
