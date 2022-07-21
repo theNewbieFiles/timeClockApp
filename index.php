@@ -49,9 +49,7 @@
 
     <div id="modalWrapper" class=" hidden">
         <div id="modal" class="">
-            <div id="modalHeader">
-                <h1 id="users_name">Name</h1>
-            </div>
+            <div id="modalHeader"></div>
 
             <div id="modalMainArea">
 
