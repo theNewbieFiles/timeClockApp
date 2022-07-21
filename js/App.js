@@ -1,5 +1,6 @@
 import {CheckTimeModal} from "./views/CheckTimeModal.js";
 import {UserView} from "./views/UserView.js";
+import {DocumentsView} from "./views/DocumentsView";
 
 
 export class App{
@@ -39,8 +40,8 @@ export class App{
 
         this.wrapper = document.getElementById("userViewWrapper");
 
-
-        this.username = null;
+        //for storing user info
+        this.user = null;
 
     }
 
@@ -53,6 +54,8 @@ export class App{
         this.clockOut_Btn.onmouseup = this.clockOutButton.bind(this);
 
         this.checkTime_Btn.onmouseup = this.checkTimeButton.bind(this);
+
+        this.safety_Btn.onmouseup = this.safetyButton.bind(this);
 
 
         window.addEventListener("closeModal", e => {
@@ -73,12 +76,12 @@ export class App{
         }).then( response => {
 
             if(response['success']){
-                console.log(response['data']);
+                //console.log(response['data']);
 
-                this.userViewActivate(response['data']);
+                this.user = response['data'];
+                this.user.username = this.input.value;
 
-                this.username = this.input.value;
-
+                this.userViewActivate();
 
             }else{
 
@@ -101,7 +104,7 @@ export class App{
     clockInButton(){
         this.requestHandler.APIRequest({
             module: "ClockIn",
-            username: this.input.value
+            username: this.user.username
         }).then( response => {
 
             if(response['success']){
@@ -122,7 +125,7 @@ export class App{
     clockOutButton(){
         this.requestHandler.APIRequest({
             module: "ClockOut",
-            username: this.input.value
+            username: this.user.username
         }).then( response => {
 
             if(response['success']){
@@ -142,10 +145,16 @@ export class App{
 
     checkTimeButton(){
         this.modalBackground.classList.remove("hidden");
-        this.modal = new CheckTimeModal(this.input.value, this.requestHandler);
+        this.modal = new CheckTimeModal(this.user, this.requestHandler);
         this.modal.init();
 
 
+    }
+
+    safetyButton(){
+        this.modalBackground.classList.remove("hidden");
+        this.modal = new DocumentsView(this.user, this.requestHandler);
+        this.modal.init();
     }
 
 
@@ -155,9 +164,9 @@ export class App{
     }
 
     //user view
-    userViewActivate(User){
-
-        if(User['user_status']){
+    userViewActivate(){
+this.username
+        if(this.user['user_status']){
             //user is clocked in
             this.clockIn_Btn.classList.add("hidden");
             this.clockOut_Btn.classList.remove("hidden");
@@ -168,10 +177,13 @@ export class App{
         }
 
         this.wrapper.classList.remove("hidden");
+
     }
 
     userViewDeactivate(){
         this.wrapper.classList.add("hidden");
+
+        this.user = null;
     }
 
 

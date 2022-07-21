@@ -12,13 +12,13 @@ export class CheckTimeModal extends Modal{
 
     /**
      *
-     * @param Username {string}
+     * @param User {Object}
      * @param RequestHandler {RequestHandler}
      */
-    constructor(Username, RequestHandler) {
+    constructor(User, RequestHandler) {
         super();
 
-        this.username = Username;
+        this.user = User;
         this.requestHandler = RequestHandler;
 
         //even tho the system knows what day of the week it is
@@ -29,8 +29,10 @@ export class CheckTimeModal extends Modal{
 
         this.modalWrapper = document.getElementById("modalWrapper");
         this.modalDiv = document.getElementById("modal");
-        //this.header = document.getElementById("modalHeader");
-        this.name = document.getElementById("users_name");
+        this.header = document.getElementById("modalHeader");
+        this.name = document.createElement("h1");
+        this.name.id = "users_name";
+        this.header.appendChild(this.name);
         this.mainArea = document.getElementById("modalMainArea");
 
         this.exit_Btn = document.getElementById("exitModal_Btn");
@@ -73,20 +75,14 @@ export class CheckTimeModal extends Modal{
     }
 
     init(){
-        //get user info
+        //TODO: show spinning gif
 
-        this.requestHandler.APIRequest({
-            module: "UserInfo",
-            username: this.username
-        }).then( response => {
-            this.name.innerText = response['lastName'] + ", " + response['firstName']
-        }).catch(error => {
-            console.error(error);
-        });
+
+        this.name.innerText = this.user['lName'] + ", " + this.user['fName'];
 
         this.requestHandler.APIRequest({
             module: "GetTimesForUser",
-            username: this.username
+            username: this.user.username
         }).then( response => {
 
             //console.log(response);
@@ -192,9 +188,9 @@ export class CheckTimeModal extends Modal{
 
         this.exit_Btn.onmouseup = null;
 
+        //clear out the divs
         this.mainArea.innerHTML = "";
-
-        this.name.innerHTML = "";
+        this.header.innerHTML = "";
 
 
 
