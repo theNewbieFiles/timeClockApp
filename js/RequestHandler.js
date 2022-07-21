@@ -8,7 +8,7 @@ export class RequestHandler {
     }
 
     request(Data){
-        return fetch("/cmd/", {
+        return fetch("/api/", {
             method: 'POST',
             headers: this.#myHeaders,
             mode: 'cors',
@@ -31,6 +31,29 @@ export class RequestHandler {
             })
 
         })
+    }
+
+    //new version returns a promise
+    APIRequest(Data){
+
+        return new Promise((resolve, reject) => {
+
+            fetch("api/", {
+                method: 'POST',
+                headers: this.#myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: new URLSearchParams(Data)
+
+            }).then(e => e.json()).then(response => {
+
+                resolve(response);
+
+            }).catch(e => {
+                reject(e);
+            })
+        });
+
     }
 
 }

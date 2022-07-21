@@ -23,33 +23,47 @@
 
 </head>
 <body>
-<div id="main-container">
+    <div id="main-container">
 
-    <div id="wrapper">
-        <input id="userID" type="text">
-        <button id="login_Btn">Login</button>
-        <button id="checkTime_Btn">Check Time</button>
-        <button id="safety_Btn">Safety Sheet</button>
+        <div id="wrapper">
+            <input id="userID" type="text">
+            <button id="go_Btn">Go</button>
+        </div>
+
+
+
+
+        <div id="userViewWrapper" class="hidden">
+            <div id="userView">
+                <button id="clockIn_Btn">Clock In</button>
+                <button id="clockOut_Btn">Clock Out</button>
+                <button id="checkTime_Btn">Check Time</button>
+                <button id="safety_Btn">Safety Sheet</button>
+                <button id="exit_Btn">Exit</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modal_Bg" class="modalBackground hidden"></div>
+
+    <div id="modalWrapper" class=" hidden">
+        <div id="modal" class="">
+            <div id="modalHeader">
+                <h1 id="users_name">Name</h1>
+            </div>
+
+            <div id="modalMainArea">
+
+            </div>
+            <button id="exitModal_Btn">exit</button>
+
+        </div>
     </div>
 
 
 
-
-
-    <div id="views">
-        <?php /*include FRONTEND_PAGE . "home.php"*/?>
-
-
-        <?php /*include FRONTEND_PAGE . "documents.php"*/?>
-
-
-        <?php /*include FRONTEND_PAGE . "doc.php"*/?>
-
-        <?php /*include FRONTEND_PAGE . "timecheck.php"*/ ?>
-    </div>
-</div>
-
-<script type='module' src='js/main.js'></script>
+    <script type='module' src='js/main.js'></script>
 </body>
 </html>
 
