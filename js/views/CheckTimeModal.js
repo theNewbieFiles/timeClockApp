@@ -136,38 +136,35 @@ export class CheckTimeModal extends Modal{
                 //console.log(date);
                 row.insertCell(0).innerHTML = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
                 row.insertCell(1).innerHTML = this.weekday[date.getDay()];
-                row.insertCell(2).innerHTML = (date.getUTCHours() % 12) + ":" + String(date.getMinutes()).padStart(2, '0');
+                row.insertCell(2).innerHTML = this.getHours(date.getUTCHours()) + ":" + String(date.getMinutes()).padStart(2, '0') + this.getMeridiem(date.getUTCHours());
                 if(UserData[i]["event"]){
                     row.insertCell(3).innerHTML = "Clocked In";
                 }else{
                     row.insertCell(3).innerHTML = "Clocked Out";
                 }
-
-
-
-
-                //console.log(first);
             }
 
-
-            /*response.forEach( value => {
-
-
-                let day = new Date(value['time_stamp']+ "Z");
-
-                console.log(day);
-                console.log(day.getDay());
-
-                console.log(day.getTime());
-
-                this.mainArea.innerHTML += value["time_stamp"];
-                this.mainArea.innerHTML += "<br />";
-            })*/
-
-            console.log(new Date())
         }else{
             console.log(response);
         }
+    }
+
+    getHours(Value){
+        if(Value < 13){ return Value}
+
+        return Value % 12;
+    }
+
+    getMeridiem(Value){
+        /*
+        AM = Ante meridiem: Before noon
+        PM = Post meridiem: After noon
+        */
+
+        if(Value < 12){ return " AM"}
+
+        return " PM";
+
     }
 
 

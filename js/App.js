@@ -25,8 +25,7 @@ export class App{
 
 
         this.input = document.getElementById("userID");
-        //testing
-        this.input.value = "cwilson";
+
         this.go_Btn = document.getElementById("go_Btn");
 
         //modalBackground
@@ -50,7 +49,7 @@ export class App{
     }
 
     init(){
-        //mouse functions
+        //button functions
         this.go_Btn.onmouseup = this.goButton.bind(this);
 
         this.clockIn_Btn.onmouseup = this.clockInButton.bind(this);
@@ -60,6 +59,8 @@ export class App{
         this.checkTime_Btn.onmouseup = this.checkTimeButton.bind(this);
 
         this.safety_Btn.onmouseup = this.safetyButton.bind(this);
+
+        this.exit_Btn.onmouseup = this.exit.bind(this);
 
 
         window.addEventListener("closeModal", e => {
@@ -196,10 +197,14 @@ export class App{
     }
 
     userViewDeactivate(){
-        this.wrapper.classList.add("hidden");
-
-        this.user = null;
+        this.exit();
     }
 
 
+    exit(){
+
+        this.wrapper.classList.add("hidden");
+        this.input.value = "";
+        this.user = null;
+    }
 }
