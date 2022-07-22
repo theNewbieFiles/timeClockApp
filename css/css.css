@@ -61,14 +61,13 @@ body{
     position: fixed;
     left: 50%;
     width: 800px;
-    min-height: 500px;
+
 }
 
 
 #modal{
     position: absolute; /* Stay in place */
     z-index: 1; /* Sit on top */
-    width: 100%;
 
 
     left: -50%;
@@ -76,6 +75,8 @@ body{
     padding: 10px;
     background-color: whitesmoke;
     color: black;
+    width: 800px;
+    min-height: 500px;
 }
 
 #modalMainArea{
@@ -116,3 +117,93 @@ body{
     margin: 20px auto;
     display: block;
 }
+
+/*-------------------documents view-------------------*/
+#dlToolbar{
+    width: 100%;
+    background-color: #c3c3c3;
+
+}
+
+#documentList{
+    position: relative;
+}
+
+#documentList > li{
+    width: 100%;
+    display: flex;
+}
+
+#documentList > li:hover{
+    cursor: pointer;
+    background-color: #c3c3c3;
+}
+
+.dlImg{
+    order: 0;
+    flex: 0 0 60px;
+    height: 60px
+}
+
+.dlMain{
+    order: 1;
+    width: 100%;
+}
+
+.dlTitle{
+
+}
+
+.dlInfo{
+
+}
+
+.dlUserInfo{
+    order: 2;
+    flex: 0 0 100px;
+    height: 60px;
+}
+
+
+/*-------------------docView-------------------*/
+#docViewWrapper{
+    position: fixed;
+    width: 1250px;
+    left: 50%;
+
+}
+
+#docView{
+    position: absolute;
+    left: -50%;
+    width: 1250px;
+    min-height: 500px;
+
+
+    border-radius: 10px;
+    padding: 10px;
+    background-color: whitesmoke;
+    color: black;
+}
+
+#dvTitle{
+    font-size: 20px;
+}
+
+#dvData{
+    height: 500px;
+    overflow: auto;
+    padding: 15px;
+
+}
+
+#dvData > p{
+    margin-bottom: 15px;
+}
+
+
+
+
+
+
+

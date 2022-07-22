@@ -1,6 +1,7 @@
 import {CheckTimeModal} from "./views/CheckTimeModal.js";
 import {UserView} from "./views/UserView.js";
 import {DocumentsView} from "./views/DocumentsView";
+import {DocView} from "./views/DocView";
 
 
 export class App{
@@ -18,6 +19,9 @@ export class App{
 
 
         this.modal = null;
+
+        //signature
+        this.docView = null;
 
 
         this.input = document.getElementById("userID");
@@ -64,7 +68,19 @@ export class App{
                 this.modalBackground.classList.add("hidden");
                 this.modal = null;
             }
-        })
+
+            if(this.docView){
+
+            }
+        });
+
+        //documents
+        window.addEventListener("docClicked", e => {
+            console.log(e.detail.docId);
+
+            this.docView = new DocView()
+
+        });
     }
 
 
@@ -165,7 +181,6 @@ export class App{
 
     //user view
     userViewActivate(){
-this.username
         if(this.user['user_status']){
             //user is clocked in
             this.clockIn_Btn.classList.add("hidden");

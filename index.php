@@ -47,7 +47,7 @@
 
     <div id="modal_Bg" class="modalBackground hidden"></div>
 
-    <div id="modalWrapper" class=" hidden">
+    <div id="modalWrapper" class="hidden">
         <div id="modal" class="">
             <div id="modalHeader"></div>
 
@@ -58,6 +58,23 @@
 
         </div>
     </div>
+
+    <div id="docViewWrapper" class="hidden">
+        <div id="docView" >
+            <div id="dvMainArea">
+                <h1 id="dvTitle"></h1>
+                <div id="dvData"></div>
+            </div>
+            <div id="sigArea" class="hidden">
+                <label for="signature">Signature</label>
+                <input id="signature" type="text">
+                <button id="sigSubmit_Btn">Submit</button>
+
+            </div>
+            <button id="dvExit_Btn">Exit</button>
+        </div>
+    </div>
+
 
 
 

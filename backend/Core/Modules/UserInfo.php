@@ -26,7 +26,7 @@ class UserInfo
                 "msg" => "username is blank"
             ]);
 
-            exit();
+            return;
         }
 
 

@@ -3,13 +3,6 @@ import {Modal} from "./Modal.js";
 export class CheckTimeModal extends Modal{
 
 
-    //sections
-    modalWrapper;
-    modalDiv;
-    header;
-    name;
-    mainArea;
-
     /**
      *
      * @param User {Object}
@@ -17,6 +10,8 @@ export class CheckTimeModal extends Modal{
      */
     constructor(User, RequestHandler) {
         super();
+        console.log(this.header);
+
 
         this.user = User;
         this.requestHandler = RequestHandler;
@@ -27,15 +22,10 @@ export class CheckTimeModal extends Modal{
         this.weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 
-        this.modalWrapper = document.getElementById("modalWrapper");
-        this.modalDiv = document.getElementById("modal");
-        this.header = document.getElementById("modalHeader");
+
         this.name = document.createElement("h1");
         this.name.id = "users_name";
         this.header.appendChild(this.name);
-        this.mainArea = document.getElementById("modalMainArea");
-
-        this.exit_Btn = document.getElementById("exitModal_Btn");
 
 
         this.modalWrapper.classList.remove("hidden");
