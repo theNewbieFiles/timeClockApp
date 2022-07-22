@@ -2,81 +2,52 @@ import {Modal} from "./Modal.js";
 
 export class CheckTimeModal extends Modal{
 
+    user;   //user info
+    app;    //reference to app
 
     /**
      *
      * @param User {Object}
-     * @param RequestHandler {RequestHandler}
+     * @param App {App}
      */
-    constructor(User, RequestHandler) {
+    constructor(User, App) {
         super();
-        console.log(this.header);
-
 
         this.user = User;
-        this.requestHandler = RequestHandler;
+        this.app = App;
 
         //even tho the system knows what day of the week it is
         //example: Wed Jul 20 2022 or Tue Jul 19 2022
         //it doesn't know what day of the week it is...
         this.weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-
-
+        //Create modal parts
         this.name = document.createElement("h1");
         this.name.id = "users_name";
         this.header.appendChild(this.name);
 
-
+        //show the modal
         this.modalWrapper.classList.remove("hidden");
-
-
-
     }
 
-    /*setExitButton(callback){
-        this.exit_Btn.onmouseup = callback;
-    }*/
-
-    buildModal(){
-        this.modalWrapper = document.createElement("div");
-        this.modalWrapper.classList.add("modalWrapper");
-
-
-
-
-        this.modalDiv = document.createElement("div");
-        this.modalDiv.classList.add("modal");
-
-        this.modalWrapper.appendChild(this.modalDiv);
-
-        this.header = document.createElement("div");
-        this.name = document.createElement("h1");
-        this.name.innerText = this.username;
-
-        this.header.appendChild(this.name);
-
-
-        this.modalDiv.appendChild(this.header);
-
-        this.mainArea = document.createElement("div");
-
-        this.modalDiv.appendChild(this.mainArea);
-    }
 
     init(){
         //TODO: show spinning gif
-
+        this.mainArea.innerHTML = "Loading...";
 
         this.name.innerText = this.user['lName'] + ", " + this.user['fName'];
 
-        this.requestHandler.APIRequest({
+        //request info
+        this.app.requestHandler.APIRequest({
             module: "GetTimesForUser",
             username: this.user.username
         }).then( response => {
+            if(response['success']){
+                this.createTable(response['data']);
+            }else{
+                this.app.showError(response['errorMsg'])
+            }
 
-            //console.log(response);
-            this.createTable(response['data']);
 
         }).catch(error => {
 
@@ -86,12 +57,14 @@ export class CheckTimeModal extends Modal{
 
         //button
         this.exit_Btn.onmouseup = e => {
-            dispatchEvent(new Event("closeModal"));
+            this.exit();
+            this.app.closeModal();
         };
     }
 
     createTable(UserData){
-        //TODO: Put a wrapper around the table so it will scroll
+
+        //create basic table parts
         let table = document.createElement('table');
         let thead = document.createElement('thead');
         let tbody = document.createElement('tbody');
@@ -99,45 +72,53 @@ export class CheckTimeModal extends Modal{
         table.appendChild(thead);
         table.appendChild(tbody);
 
+        //create the header area
         let row_1 = document.createElement('tr');
         let heading_1 = document.createElement('th');
         heading_1.innerHTML = "Date";
+
         let heading_2 = document.createElement('th');
         heading_2.innerHTML = "Day";
+
         let heading_3 = document.createElement('th');
         heading_3.innerHTML = "Time";
 
         let heading_4 = document.createElement('th');
         heading_4.innerHTML = "Event";
-/*
-        let heading_5 = document.createElement('th');
-        heading_5.innerHTML = "Hours";*/
 
+        //attach the header
         row_1.appendChild(heading_1);
         row_1.appendChild(heading_2);
         row_1.appendChild(heading_3);
         row_1.appendChild(heading_4);
-        /*row_1.appendChild(heading_5);*/
+
+        //attach header to table
         thead.appendChild(row_1);
 
+        //clean up the area
+        this.mainArea.innerHTML = "";
+
+        //adding table
         this.mainArea.appendChild(table);
 
         if(Array.isArray(UserData)){
 
-            /*let rowCount = table.rows.length;
-            console.log(rowCount);
-            let row = table.insertRow(rowCount);*/
-
-
-
             for (let i = 0; i < UserData.length; i++) {
                 let row = tbody.insertRow(tbody.rows.length);
                 let date = new Date(UserData[i]['time_stamp'] + "Z"); //I'm not sure if I need the Z
-                //console.log(date);
+
+                //generate date
                 row.insertCell(0).innerHTML = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+
+                //show the day of the week
                 row.insertCell(1).innerHTML = this.weekday[date.getDay()];
+
+                //show time
                 row.insertCell(2).innerHTML = this.getHours(date.getUTCHours()) + ":" + String(date.getMinutes()).padStart(2, '0') + this.getMeridiem(date.getUTCHours());
-                if(UserData[i]["event"]){
+
+                // 1 = clocked in 0 = clocked out
+                //had to parseInt because different versions of php's json_encode encode differently
+                if(parseInt(UserData[i]["event"]) === 1){
                     row.insertCell(3).innerHTML = "Clocked In";
                 }else{
                     row.insertCell(3).innerHTML = "Clocked Out";
@@ -145,7 +126,8 @@ export class CheckTimeModal extends Modal{
             }
 
         }else{
-            console.log(response);
+            //error...
+            console.error("Response didn't contain an Array");
         }
     }
 
@@ -173,14 +155,12 @@ export class CheckTimeModal extends Modal{
         //clean up everything
         this.modalWrapper.classList.add("hidden");
 
+        //I don't think this is a binding issue but just in case
         this.exit_Btn.onmouseup = null;
 
         //clear out the divs
         this.mainArea.innerHTML = "";
         this.header.innerHTML = "";
-
-
-
 
     }
 

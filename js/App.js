@@ -73,11 +73,15 @@ export class App{
 
         //modal background
         this.modalBackground.onmouseup = () => {
-            dispatchEvent(new Event("closeModal"));
+
+            //there should be a modal
+            if(this.modal) {
+                this.modal.exit();
+            }
+
+            this.closeModal();
         };
 
-        //event listener
-        window.addEventListener("closeModal", this.closeModal.bind(this));
 
     }
 
@@ -165,7 +169,7 @@ export class App{
 
     checkTimeButton(){
         this.modalBackground.classList.remove("hidden");
-        this.modal = new CheckTimeModal(this.user, this.requestHandler);
+        this.modal = new CheckTimeModal(this.user, this);
         this.modal.init();
 
 
@@ -173,7 +177,7 @@ export class App{
 
     safetyButton(){
         this.modalBackground.classList.remove("hidden");
-        this.modal = new DocumentsView(this.user, this.requestHandler);
+        this.modal = new DocumentsView(this.user, this);
         this.modal.init();
     }
 
