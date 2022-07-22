@@ -1,7 +1,7 @@
 import {CheckTimeModal} from "./views/CheckTimeModal.js";
-import {UserView} from "./views/UserView.js";
-import {DocumentsView} from "./views/DocumentsView";
-import {DocView} from "./views/DocView";
+
+import {DocumentsView} from "./views/DocumentsView.js";
+import {DocView} from "./views/DocView.js";
 
 
 export class App{
@@ -17,33 +17,30 @@ export class App{
         this.requestHandler = RequestHandler;
 
 
-
+        //most views use a modal
         this.modal = null;
-
-        //signature
-        this.docView = null;
 
 
         this.input = document.getElementById("userID");
-
         this.go_Btn = document.getElementById("go_Btn");
 
         //modalBackground
         this.modalBackground = document.getElementById("modal_Bg");
-        this.modalBackground.onmouseup = () => {dispatchEvent(new Event("closeModal"));};
 
-        //userView
-        this.userView = null;
-
+        //user info on top of user screen
         this.userInfo = document.getElementById("userInfo");
 
+        //buttons
         this.clockIn_Btn = document.getElementById("clockIn_Btn");
         this.clockOut_Btn = document.getElementById("clockOut_Btn");
         this.checkTime_Btn = document.getElementById("checkTime_Btn");
         this.safety_Btn = document.getElementById("safety_Btn");
         this.exit_Btn = document.getElementById("exit_Btn");
 
+        //user view
         this.wrapper = document.getElementById("userViewWrapper");
+        this.userView = null;
+
 
         //for storing user info
         this.user = null;
@@ -51,6 +48,16 @@ export class App{
     }
 
     init(){
+        //put focus on input
+        this.input.focus();
+
+        //check for enter press
+        this.input.addEventListener("keyup", e => {
+            if(e.key === 'Enter'){
+                this.goButton();
+            }
+        });
+
         //button functions
         this.go_Btn.onmouseup = this.goButton.bind(this);
 
@@ -62,44 +69,41 @@ export class App{
 
         this.safety_Btn.onmouseup = this.safetyButton.bind(this);
 
-        this.exit_Btn.onmouseup = this.exit.bind(this);
+        this.exit_Btn.onmouseup = this.exitButton.bind(this);
 
-
-        window.addEventListener("closeModal", e => {
+        //modal background
+        this.modalBackground.onmouseup = () => {
             if(this.modal){
                 this.modal.exit();
                 this.modalBackground.classList.add("hidden");
                 this.modal = null;
             }
+        };
 
-            if(this.docView){
-
-            }
-        });
-
-        //documents
-        window.addEventListener("docClicked", e => {
-            console.log(e.detail.docId);
-
-            this.docView = new DocView()
-
-        });
     }
 
 
     //button functions
     goButton(){
+
+        if(this.input.value === ""){
+           this.showError("Username is blank");
+           return
+        }
+
         this.requestHandler.APIRequest({
-            module: "Login",
+            module: "GetUserInfo",
             username: this.input.value
         }).then( response => {
 
             if(response['success']){
-                //console.log(response['data']);
 
+                //user exists
+                //save user info for the session
                 this.user = response['data'];
                 this.user.username = this.input.value;
 
+                //change views
                 this.userViewActivate();
 
             }else{
@@ -127,17 +131,15 @@ export class App{
         }).then( response => {
 
             if(response['success']){
-
-
                 this.userViewDeactivate();
 
             }else{
-
+                this.showError(response['errorMsg'])
             }
 
 
         }).catch(error => {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -153,12 +155,12 @@ export class App{
                 this.userViewDeactivate();
 
             }else{
-
+                this.showError(response['errorMsg'])
             }
 
 
         }).catch(error => {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -176,17 +178,22 @@ export class App{
         this.modal.init();
     }
 
+    exitButton(){
+        this.userViewDeactivate();
+    }
+
 
     showError($Msg){
         //TODO: show message in custom popup
         alert($Msg)
     }
 
-    //user view
+    //show user view
     userViewActivate(){
 
         this.userInfo.innerHTML = "Welcome " + this.user['fName'];
-        if(this.user['user_status']){
+
+        if(parseInt(this.user['user_status'])){
             //user is clocked in
             this.clockIn_Btn.classList.add("hidden");
             this.clockOut_Btn.classList.remove("hidden");
@@ -200,15 +207,16 @@ export class App{
 
     }
 
+    //hide user view
     userViewDeactivate(){
-        this.exit();
-    }
-
-
-    exit(){
-
         this.wrapper.classList.add("hidden");
         this.input.value = "";
         this.user = null;
+
+        //put focus on input
+        this.input.focus();
     }
+
+
+
 }
