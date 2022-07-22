@@ -25,7 +25,7 @@ class GetTimesForUser
 
 
         if(isset($_POST['username'])){
-            $query = $this->app->db->prepare("SELECT * FROM clock where username = ? order by time_stamp limit 60;");
+            $query = $this->app->db->prepare("SELECT * FROM clock where username = ? order by time_stamp DESC limit 28;");
 
             if($query->execute([$_POST['username']])){
 
