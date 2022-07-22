@@ -73,12 +73,11 @@ export class App{
 
         //modal background
         this.modalBackground.onmouseup = () => {
-            if(this.modal){
-                this.modal.exit();
-                this.modalBackground.classList.add("hidden");
-                this.modal = null;
-            }
+            dispatchEvent(new Event("closeModal"));
         };
+
+        //event listener
+        window.addEventListener("closeModal", this.closeModal.bind(this));
 
     }
 
@@ -180,6 +179,15 @@ export class App{
 
     exitButton(){
         this.userViewDeactivate();
+    }
+
+    //modal
+    closeModal(){
+        if(this.modal){
+            this.modal.exit();
+            this.modalBackground.classList.add("hidden");
+            this.modal = null;
+        }
     }
 
 
