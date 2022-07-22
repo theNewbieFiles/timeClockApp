@@ -34,6 +34,7 @@
 
 
         <div id="userViewWrapper" class="hidden">
+            <div id="userInfo"></div>
             <div id="userView">
                 <button id="clockIn_Btn">Clock In</button>
                 <button id="clockOut_Btn">Clock Out</button>

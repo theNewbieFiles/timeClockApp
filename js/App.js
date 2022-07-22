@@ -35,6 +35,8 @@ export class App{
         //userView
         this.userView = null;
 
+        this.userInfo = document.getElementById("userInfo");
+
         this.clockIn_Btn = document.getElementById("clockIn_Btn");
         this.clockOut_Btn = document.getElementById("clockOut_Btn");
         this.checkTime_Btn = document.getElementById("checkTime_Btn");
@@ -182,6 +184,8 @@ export class App{
 
     //user view
     userViewActivate(){
+
+        this.userInfo.innerHTML = "Welcome " + this.user['fName'];
         if(this.user['user_status']){
             //user is clocked in
             this.clockIn_Btn.classList.add("hidden");

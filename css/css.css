@@ -17,6 +17,7 @@ body{
 #wrapper{
     width: 1250px;
     margin: auto;
+    margin-top: 50px;
 }
 
 #userID{
@@ -25,6 +26,16 @@ body{
     line-height: 30px;
     font-size: 30px;
 }
+
+#go_Btn{
+    display: block;
+    width: 500px;
+    margin: auto;
+    line-height: 50px;
+    font-size: 45px;
+}
+
+
 
 #userViewWrapper{
     position: absolute;
@@ -35,6 +46,28 @@ body{
     width: 100%;
     height: 100%;
 }
+
+#userInfo{
+    width: 80%;
+    font-size: 45px;
+    margin: auto;
+}
+
+#userView{
+    width: 800px;
+    margin: auto;
+}
+
+#userView > button{
+    width: 80%;
+    margin: auto;
+
+    height: 50px;
+    line-height: 50px;
+    font-size: 40px;
+}
+
+
 
 
 
