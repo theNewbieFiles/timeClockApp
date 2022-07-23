@@ -14,35 +14,37 @@ class TimeClock
         $this->db = $DB;
     }
 
-
-    public function clockIn($Username){
-        $query = $this->db->prepare("INSERT INTO clock (username, event) values (?, 1)");
-
-        if($query->execute([$Username])){
-
-            $query = $this->db->prepare("UPDATE users SET user_status = 1 WHERE username = ?");
-
-            if($query->execute([$Username])){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function clockOut($Username){
-        $query = $this->db->prepare("INSERT INTO clock (username, event) values (?, 0)");
+    public function clockEvent($Username){
+        //get current users login state
+        $query = $this->db->prepare("SELECT user_status FROM users WHERE username = ?");
 
         if($query->execute([$Username])){
-            $query = $this->db->prepare("UPDATE users SET user_status = 0 WHERE username = ?");
 
-            if($query->execute([$Username])){
-                return true;
+            $userStatus = $query->fetch()["user_status"];
+
+            $query = $this->db->prepare("INSERT INTO clock (username, event) values (?, ?)");
+
+            if($query->execute([$Username, $userStatus])){
+
+                $query = $this->db->prepare("UPDATE users SET user_status = ? WHERE username = ?");
+
+                $userStatus = !$userStatus;
+
+
+                if($query->execute([$userStatus, $Username])){
+                    return true;
+                }
             }
+
+            return false;
+
+
         }
 
-        return false;
+        return true;
+
     }
+
 
 }
 
