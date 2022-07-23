@@ -10,8 +10,7 @@
 require_once CORE . "Message.php";
 
 
-class ClockIn
-{
+class LogClockEvent{
 
     private $app;
 
@@ -23,14 +22,14 @@ class ClockIn
         $msg = new Message();
 
 
-        if($this->app->timeClock->clockIn($_POST['username'])){
+        if($this->app->timeClock->clockEvent($_POST['username'])){
 
             $msg->success = true;
 
         } else{
             $msg->errorCode = 400;
 
-            $msg->errorMsg = "Unable to login";
+            $msg->errorMsg = "Unable to log clock event";
         }
         $msg->send();
     }

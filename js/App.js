@@ -129,7 +129,7 @@ export class App{
 
     clockInButton(){
         this.requestHandler.APIRequest({
-            module: "ClockIn",
+            module: "LogClockEvent",
             username: this.user.username
         }).then( response => {
 
@@ -148,7 +148,7 @@ export class App{
 
     clockOutButton(){
         this.requestHandler.APIRequest({
-            module: "ClockOut",
+            module: "LogClockEvent",
             username: this.user.username
         }).then( response => {
 

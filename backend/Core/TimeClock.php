@@ -22,16 +22,19 @@ class TimeClock
 
             $userStatus = $query->fetch()["user_status"];
 
+            //create a time event based on if the user is clocked in or out
             $query = $this->db->prepare("INSERT INTO clock (username, event) values (?, ?)");
+
+            //if in out if out in
+            $userStatus = !$userStatus;
 
             if($query->execute([$Username, $userStatus])){
 
+                //update the users state
                 $query = $this->db->prepare("UPDATE users SET user_status = ? WHERE username = ?");
 
-                $userStatus = !$userStatus;
-
-
                 if($query->execute([$userStatus, $Username])){
+                    //everything executed successfully
                     return true;
                 }
             }
@@ -41,7 +44,7 @@ class TimeClock
 
         }
 
-        return true;
+        return false;
 
     }
 
