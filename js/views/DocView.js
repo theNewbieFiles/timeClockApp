@@ -6,29 +6,24 @@ export class DocView{
      * @param User
      * @param DocumentID
      * @param Signed
-     * @param RequestHandler {RequestHandler}
+     * @param App {App}
      * @param DocumentsView {DocumentsView}
      */
-    constructor(User, DocumentID, Signed, RequestHandler, DocumentsView) {
+    constructor(User, DocumentID, Signed, App, DocumentsView) {
 
         this.user = User;
         this.id = DocumentID;
-        this.requestHandler = RequestHandler;
+        this.app = App;
         this.signed = Signed;
 
         this.documentsView = DocumentsView;
 
-        console.log(this.signed);
 
-
+        //get the areas
         this.docViewWrapper = document.getElementById("docViewWrapper");
         this.title = document.getElementById("dvTitle");
-
         this.data = document.getElementById("dvData");
-
-
         this.sigArea = document.getElementById("sigArea");
-
         this.signature = document.getElementById("signature");
 
         //buttons
@@ -38,16 +33,21 @@ export class DocView{
 
     init(){
         this.docViewWrapper.classList.remove("hidden");
+
         if(!this.signed){
+            //if its not signed show the signing area
             this.sigArea.classList.remove("hidden");
         }
 
-        this.requestHandler.APIRequest({
+        this.app.requestHandler.APIRequest({
             module: "GetDoc",
             docID: this.id
         }).then( response => {
             if(response['success']){
                 this.showDoc(response['data'])
+            }else{
+                this.app.showError("There was a issues getting the document");
+                this.exit();
             }
         });
 
@@ -60,8 +60,6 @@ export class DocView{
     }
 
     showDoc(Doc){
-        console.log(Doc);
-
         this.title.innerHTML = Doc['title'];
 
         this.data.innerHTML = Doc['data'];
@@ -69,15 +67,14 @@ export class DocView{
 
     submit(){
         if(this.signature.value){
-            this.requestHandler.APIRequest({
+            this.app.requestHandler.APIRequest({
                 'module': "SignDoc",
                 'docID': this.id,
                 'username': this.user.username,
                 'signature': this.signature.value
             }).then(response => {
-
-                console.log(response);
                 if (response['success']) {
+                    //close the modal and update the document list
                     this.documentsView.update();
                     this.exit();
                 }
@@ -88,9 +85,11 @@ export class DocView{
     }
 
     exit(){
+        //hide the areas
         this.docViewWrapper.classList.add("hidden");
         this.sigArea.classList.add("hidden");
 
+        //clean up the areas
         this.title.innerHTML = "";
         this.data.innerHTML = "";
         this.signature.value = "";

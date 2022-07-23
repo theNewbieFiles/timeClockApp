@@ -1,24 +1,4 @@
-/*
-        this.checkTime_Btn = document.getElementById("checkTime_Btn");
-        this.safety_btn = document.getElementById("safety_Btn");
 
-
-
-
-this.checkTime_Btn.onmouseup = () => {
-            if(this.input.value === ""){
-                this.showError("input a user name");
-            }
-
-            this.showCheckTimeScreen();
-        };
-
-        this.safety_btn.onmouseup = () => {
-            console.log("TODO: Code this");
-        };
-
-
-        */
 
 
 export class UserView{

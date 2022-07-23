@@ -1,5 +1,5 @@
-import {Modal} from "./Modal";
-import {DocView} from "./DocView";
+import {Modal} from "./Modal.js";
+import {DocView} from "./DocView.js";
 
 
 export class DocumentsView extends Modal{
@@ -7,21 +7,21 @@ export class DocumentsView extends Modal{
     /**
      *
      * @param User
-     * @param RequestHandler {RequestHandler}
+     * @param App {App}
      */
-    constructor(User, RequestHandler) {
+    constructor(User, App) {
         super();
 
         this.user = User;
-        this.requestHandler = RequestHandler;
+        this.app = App;
 
-
-
-
+        //show modal
         this.modalWrapper.classList.remove("hidden");
 
+        //keep a refernce of the list for sorting
         this.documentList = null;
 
+        //TODO: build toolbar
         //add the tool bar
         this.toolbar = document.createElement("div");
         this.toolbar.id = "dlToolbar";
@@ -29,15 +29,13 @@ export class DocumentsView extends Modal{
         this.mainArea.appendChild(this.toolbar);
 
 
+        //document list
         this.list = document.createElement("ul");
         this.list.id = "documentList";
-        this.mainArea.appendChild(this.list);
 
 
 
-        //toolbar buttons
-
-        //docview
+        //docview modal
         this.docView = null;
 
 
@@ -46,30 +44,29 @@ export class DocumentsView extends Modal{
     init(){
 
         //TODO: show spinning gif
-
+        this.mainArea.innerHTML = "Loading...";
 
         //get the list of documents
-
-
         this.fetchList();
 
 
         //button
         this.exit_Btn.onmouseup = e => {
-            dispatchEvent(new Event("closeModal"));
+           this.exit();
+           this.app.closeModal();
         };
     }
 
     fetchList(){
-        this.requestHandler.APIRequest({
+        this.app.requestHandler.APIRequest({
             module: "GetDocumentsForUser",
             username: this.user.username
         }).then( response => {
 
-
-            console.log(response.data);
             if(response['success']){
                 this.generateList(response['data']);
+            }else{
+                this.app.showError(response['errorMsg'])
             }
 
         }).catch(error => {
@@ -77,9 +74,11 @@ export class DocumentsView extends Modal{
         });
     }
 
+    //after signing a safety doc list needs to update to reflect this
     update(){
         //clear up list
         this.list.innerHTML = "";
+        this.mainArea.innerHTML = "Updating...";
 
         this.fetchList();
 
@@ -87,13 +86,16 @@ export class DocumentsView extends Modal{
     }
 
     generateList(List){
+
+        //clear the list
+        this.mainArea.innerHTML = "";
+
+        this.mainArea.appendChild(this.list);
+
+        //loop thru each document and create a li for it
         List.forEach( value => {
 
             let li = document.createElement("li");
-
-            /*let liDiv = document.createElement("div");
-
-            li.appendChild(liDiv);*/
 
             let imgDiv = document.createElement("div");
             imgDiv.classList.add("dlImg");
@@ -115,6 +117,7 @@ export class DocumentsView extends Modal{
             let userInfo = document.createElement("div");
             userInfo.classList.add("dlUserInfo");
 
+            //has the user signed this document?
             let signed = false;
 
             if(value['signature']){
@@ -132,15 +135,9 @@ export class DocumentsView extends Modal{
             li.appendChild(userInfo);
 
 
+            //set mouse up event to show that document
             li.onmouseup = () => {
-                /*dispatchEvent(new CustomEvent("docClicked", {
-                    'detail': {
-                        'docId':
-                    }
-                }))*/
-
                 this.showDocView(value['id'], signed);
-
             };
 
 
@@ -149,17 +146,21 @@ export class DocumentsView extends Modal{
     }
 
     showDocView(ID, Signed){
-        this.docView = new DocView(this.user, ID, Signed,  this.requestHandler, this);
+        this.docView = new DocView(this.user, ID, Signed,  this.app, this);
 
         this.docView.init();
     }
 
 
 
+    //close and exit the modal
     exit(){
+        //TODO: add event and only close the doc view when modal background is clicked insead of entire modal
+
         //clean up everything
         this.modalWrapper.classList.add("hidden");
 
+        //don't think this will cause binding issues but just in case
         this.exit_Btn.onmouseup = null;
 
         //clear out the divs

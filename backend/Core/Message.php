@@ -6,6 +6,8 @@
  * Time: 5:58 PM
  */
 
+
+//simple class to pass messages from the server to the client
 class Message
 {
     //public $status;
@@ -17,7 +19,6 @@ class Message
     public function __construct(){
 
         //set defaults
-        //$this->status = "failed";
         $this->success = false;
         $this->data = null;
     }

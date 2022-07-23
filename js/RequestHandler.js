@@ -38,7 +38,7 @@ export class RequestHandler {
 
         return new Promise((resolve, reject) => {
 
-            fetch("api/", {
+            fetch("api.php", {
                 method: 'POST',
                 headers: this.#myHeaders,
                 mode: 'cors',

@@ -26,10 +26,7 @@ if(file_exists($configFile)){
    require_once $configFile;
 }else{
     $msg = new Message();
-    $msg->errorMsg = "Config File Is Missing";
-    $msg->errorCode = 1;
-
-    $msg->send();
+    $msg->sendError(1, "Config File Is Missing");
     exit();
 }
 

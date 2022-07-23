@@ -55,7 +55,7 @@
             <div id="modalMainArea">
 
             </div>
-            <button id="exitModal_Btn">exit</button>
+            <button id="exitModal_Btn">Exit</button>
 
         </div>
     </div>

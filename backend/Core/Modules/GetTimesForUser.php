@@ -25,22 +25,18 @@ class GetTimesForUser
 
 
         if(isset($_POST['username'])){
-            $query = $this->app->db->prepare("SELECT * FROM clock where username = ? order by time_stamp DESC limit 28;");
+            $query = $this->app->db->prepare("SELECT * FROM clock where username = ? order by time_stamp DESC limit 14;");
 
             if($query->execute([$_POST['username']])){
 
-                $msg->success = true;
-                $msg->data = $query->fetchAll();
+                $msg->sendSuccessful($query->fetchAll());
             }else{
-                $msg->errorMsg = $query->errorInfo();
+                $msg->sendError(0, $query->errorInfo());
             }
         }else{
-            $msg->errorMsg = "username is blank";
+            $msg->sendError(0, "username is blank");
+
         }
-
-
-        $msg->send();
-
     }
 
 }

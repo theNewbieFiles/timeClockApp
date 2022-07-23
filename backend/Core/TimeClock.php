@@ -14,16 +14,6 @@ class TimeClock
         $this->db = $DB;
     }
 
-    public function timeStamp($Username){
-
-        $query = $this->db->prepare("INSERT INTO clock (username) values (?)");
-
-        if($query->execute([$Username])){
-            return true;
-        }
-
-        return false;
-    }
 
     public function clockIn($Username){
         $query = $this->db->prepare("INSERT INTO clock (username, event) values (?, 1)");
@@ -59,7 +49,11 @@ class TimeClock
 
 
 
-/*You can select this by :
+/*
+
+getting dates after a certain time
+
+You can select this by :
 
 select * from table_name where date_column > "2001-01-01 00:00:00"
 
@@ -67,4 +61,7 @@ or if you need data within certain time frame then you can try using between key
 
 select * from table_name where date_column
 between "2018-01-04 00:00:00" and "2018-01-04 11:59:59";
-Note that date format should be in YYYY-MM-DD HH:MM:SS*/
+Note that date format should be in YYYY-MM-DD HH:MM:SS
+
+
+*/

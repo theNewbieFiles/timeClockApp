@@ -22,15 +22,13 @@ class Application
 
     public function __construct(){
         //setup database
-
         try{
             $this->db = getDatabaseConn();
         }catch (Exception $e){
             die("Error: " . $e->getMessage());
         }
 
-
-
+        //create time clock object
         $this->timeClock = new TimeClock($this->db);
 
 
@@ -40,7 +38,8 @@ class Application
 
         try{
             switch ($Method){
-                case "GET" : //$this->getRequest();
+                case "GET" : //API requests are coming via POST method
+                    exit();
                     break;
 
                 case "POST" : $this->postRequest();
@@ -68,6 +67,7 @@ class Application
 
 
 
+    //module name will be the name of the class in the modules folder
     public function loadModule($Module)
     {
 
@@ -81,7 +81,7 @@ class Application
 
                 $this->$Module->execute();
             }catch (Exception $E){
-                //TODO: code this part
+                //TODO: code this part better
                 throw new Exception("Issue with $Module", 0, $E);
             }
 

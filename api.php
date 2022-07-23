@@ -6,4 +6,6 @@
  * Time: 7:59 AM
  */
 
+
+/*Entry point for api requests*/
 require_once "init.php";
