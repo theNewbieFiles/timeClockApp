@@ -1,1 +1,1 @@
-This is a time clock app I created for one of my jobs. 
+This is a system for tracking employee time and safety compliance training. 
