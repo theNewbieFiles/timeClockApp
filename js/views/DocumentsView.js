@@ -28,6 +28,10 @@ export class DocumentsView extends Modal{
         this.toolbar.innerHTML = "Toolbar";
         this.mainArea.appendChild(this.toolbar);
 
+        //area for doc
+        this.docArea = document.createElement("div");
+        this.mainArea.appendChild(this.docArea);
+
 
         //document list
         this.list = document.createElement("ul");
@@ -44,7 +48,7 @@ export class DocumentsView extends Modal{
     init(){
 
         //TODO: show spinning gif
-        this.mainArea.innerHTML = "Loading...";
+        this.docArea.innerHTML = "Loading...";
 
         //get the list of documents
         this.fetchList();
@@ -78,7 +82,7 @@ export class DocumentsView extends Modal{
     update(){
         //clear up list
         this.list.innerHTML = "";
-        this.mainArea.innerHTML = "Updating...";
+        this.docArea.innerHTML = "Updating...";
 
         this.fetchList();
 
@@ -88,7 +92,7 @@ export class DocumentsView extends Modal{
     generateList(List){
 
         //clear the list
-        this.mainArea.innerHTML = "";
+        this.docArea.innerHTML = "";
 
         this.mainArea.appendChild(this.list);
 
